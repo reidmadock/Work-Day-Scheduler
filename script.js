@@ -1,11 +1,23 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
+renderLastMessage();
+
+var rowMessage = {
+  rowId: "",
+  rowTxt: ""
+};
+
+function renderLastMessage() {
+  localStorage.getItem("saved-task")
+}
+
 $(function () {
   var allRows = $(".container-lg").find(".time-block");
   var allButtons = $(".container-lg").find(".saveBtn");
+  var allTextAreas = $(".container-lg").find(".description")
   var currentHour = dayjs().hour();
-  // console.log(allButtons);
+  console.log(allButtons);
 
   for (var i = 0; i < allRows.length; i++) {
     var rowIds = $(allRows[i]).prop('id');
@@ -20,11 +32,27 @@ $(function () {
     if (blockTime > currentHour) {
       $(allRows[i]).removeClass(currentClass).addClass('row time-block future')
     }
+    localStorage.setItem(allRows[i],"");
   }
 
-  for (var i = 0; i < allButtons.length; i++) {
+  $('.saveBtn').on('click', function () {
+    console.log("HEATHER WAS RIGHT");
+    // console.log($(this).find(".description"));
+    console.log(this.parentElement);
+    var currText = this.parentElement.childNodes[3].value
+    localStorage.setItem("saved-task",currText);
+  })
 
-  }
+  // for (var i = 0; i < allRows.length; i++) {
+  //   //var currBtn = $(allRows[i]).find('saveBtn');
+  //   //var currText = $(allRows[i]).find('description');
+  //   console.log(allRows[i]);
+  //   var currBtn = allRows[i].childNodes[3]
+  //   var currText = allRows[i].childNodes[5]
+  //   $(currBtn).on('click', function () {
+  //     console.log("test");
+  //   })
+  // }
   
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
